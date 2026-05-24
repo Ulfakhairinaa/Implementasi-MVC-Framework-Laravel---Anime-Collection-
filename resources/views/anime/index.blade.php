@@ -63,7 +63,8 @@
     @else
         <div class="anime-grid" id="animeGrid">
             @foreach($animes as $anime)
-            <div class="anime-card" data-search="{{ strtolower($anime->judul . ' ' . $anime->genre . ' ' . $anime->studio) }}">
+            {{-- data-search pakai relasi ->nama --}}
+            <div class="anime-card" data-search="{{ strtolower($anime->judul . ' ' . ($anime->genre->nama ?? '') . ' ' . ($anime->studio->nama ?? '')) }}">
 
                 {{-- Card Image --}}
                 <div class="card-image" style="position:relative;">
@@ -81,8 +82,8 @@
                         ⭐ {{ $anime->rating }}
                     </div>
 
-                    {{-- Genre Badge --}}
-                    <div class="genre-badge-img">{{ $anime->genre }}</div>
+                    {{-- Genre Badge — pakai relasi ->nama --}}
+                    <div class="genre-badge-img">{{ $anime->genre->nama ?? '-' }}</div>
                 </div>
 
                 {{-- Card Body --}}
@@ -93,9 +94,10 @@
                         <span class="meta-item">
                             <span class="icon">📺</span> {{ $anime->episode }} Eps
                         </span>
+                        {{-- Studio — pakai relasi ->nama --}}
                         @if($anime->studio)
                         <span class="meta-item">
-                            <span class="icon">🎬</span> {{ $anime->studio }}
+                            <span class="icon">🎬</span> {{ $anime->studio->nama ?? '-' }}
                         </span>
                         @endif
                         @if($anime->tahun_rilis)

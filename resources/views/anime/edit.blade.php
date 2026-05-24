@@ -62,37 +62,76 @@
             {{-- Judul --}}
             <div class="form-group">
                 <label class="form-label">🎌 Judul Anime</label>
-                <input type="text" name="judul" class="form-control {{ $errors->has('judul') ? 'is-invalid' : '' }}"
+                <input type="text" name="judul"
+                       class="form-control {{ $errors->has('judul') ? 'is-invalid' : '' }}"
                        value="{{ old('judul', $anime->judul) }}" required>
                 @error('judul') <span class="invalid-feedback">{{ $message }}</span> @enderror
             </div>
 
-            {{-- Genre + Studio --}}
+            {{-- Genre + Studio — DIUBAH jadi dropdown relasi --}}
             <div class="form-row">
+
+                {{-- Dropdown Genre --}}
                 <div class="form-group">
                     <label class="form-label">🎭 Genre</label>
-                    <input type="text" name="genre" class="form-control {{ $errors->has('genre') ? 'is-invalid' : '' }}"
-                           value="{{ old('genre', $anime->genre) }}" required>
-                    @error('genre') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                    <select name="genre_id"
+                            class="form-control {{ $errors->has('genre_id') ? 'is-invalid' : '' }}"
+                            id="genreSelect"
+                            onchange="toggleBaru(this, 'genre')" required>
+                        <option value="">-- Pilih Genre --</option>
+                        @foreach($genres as $g)
+                            <option value="{{ $g->id }}"
+                                {{ old('genre_id', $anime->genre_id) == $g->id ? 'selected' : '' }}>
+                                {{ $g->nama }}
+                            </option>
+                        @endforeach
+                        <option value="baru">+ Tambah Genre Baru</option>
+                    </select>
+                    <input type="text" name="genre_baru" id="genre_baru"
+                           class="form-control mt-2"
+                           placeholder="Nama genre baru..."
+                           style="display:none; margin-top:8px;">
+                    @error('genre_id') <span class="invalid-feedback">{{ $message }}</span> @enderror
                 </div>
+
+                {{-- Dropdown Studio --}}
                 <div class="form-group">
                     <label class="form-label">🎬 Studio</label>
-                    <input type="text" name="studio" class="form-control"
-                           value="{{ old('studio', $anime->studio) }}">
+                    <select name="studio_id"
+                            class="form-control {{ $errors->has('studio_id') ? 'is-invalid' : '' }}"
+                            id="studioSelect"
+                            onchange="toggleBaru(this, 'studio')" required>
+                        <option value="">-- Pilih Studio --</option>
+                        @foreach($studios as $s)
+                            <option value="{{ $s->id }}"
+                                {{ old('studio_id', $anime->studio_id) == $s->id ? 'selected' : '' }}>
+                                {{ $s->nama }}
+                            </option>
+                        @endforeach
+                        <option value="baru">+ Tambah Studio Baru</option>
+                    </select>
+                    <input type="text" name="studio_baru" id="studio_baru"
+                           class="form-control"
+                           placeholder="Nama studio baru..."
+                           style="display:none; margin-top:8px;">
+                    @error('studio_id') <span class="invalid-feedback">{{ $message }}</span> @enderror
                 </div>
+
             </div>
 
             {{-- Episode + Rating --}}
             <div class="form-row">
                 <div class="form-group">
                     <label class="form-label">📺 Jumlah Episode</label>
-                    <input type="number" name="episode" class="form-control {{ $errors->has('episode') ? 'is-invalid' : '' }}"
+                    <input type="number" name="episode"
+                           class="form-control {{ $errors->has('episode') ? 'is-invalid' : '' }}"
                            value="{{ old('episode', $anime->episode) }}" min="1" required>
                     @error('episode') <span class="invalid-feedback">{{ $message }}</span> @enderror
                 </div>
                 <div class="form-group">
                     <label class="form-label">⭐ Rating (0–10)</label>
-                    <input type="number" name="rating" class="form-control {{ $errors->has('rating') ? 'is-invalid' : '' }}"
+                    <input type="number" name="rating"
+                           class="form-control {{ $errors->has('rating') ? 'is-invalid' : '' }}"
                            value="{{ old('rating', $anime->rating) }}" step="0.1" min="0" max="10" required>
                     @error('rating') <span class="invalid-feedback">{{ $message }}</span> @enderror
                 </div>
@@ -133,6 +172,11 @@ function previewImage(input) {
         preview.style.display = 'block';
     };
     reader.readAsDataURL(file);
+}
+
+function toggleBaru(select, type) {
+    const input = document.getElementById(type + '_baru');
+    input.style.display = select.value === 'baru' ? 'block' : 'none';
 }
 </script>
 

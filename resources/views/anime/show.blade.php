@@ -67,10 +67,9 @@
             <div class="detail-card">
                 <h1 class="detail-title">{{ $anime->judul }}</h1>
 
+                {{-- Genre — pakai relasi ->nama, bukan explode --}}
                 <div style="margin-bottom: 1rem;">
-                    @foreach(explode(',', $anime->genre) as $g)
-                        <span class="genre-tag">{{ trim($g) }}</span>
-                    @endforeach
+                    <span class="genre-tag">{{ $anime->genre->nama ?? '-' }}</span>
                 </div>
 
                 <div class="stats-grid">
@@ -88,11 +87,12 @@
                     </div>
                 </div>
 
+                {{-- Studio — pakai relasi ->nama --}}
                 @if($anime->studio)
                 <div style="margin-bottom: 1.5rem;">
                     <p class="detail-section-title">Studio Produksi</p>
                     <p style="font-size:0.95rem; font-weight:500; color: var(--text-primary);">
-                        🎬 {{ $anime->studio }}
+                        🎬 {{ $anime->studio->nama ?? '-' }}
                     </p>
                 </div>
                 @endif

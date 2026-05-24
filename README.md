@@ -1,59 +1,161 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🎌 Anime Collection — Tugas Praktikum Laravel
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi web pengelolaan koleksi anime berbasis framework **Laravel**, dibuat sebagai tugas mata kuliah Pemrograman Berbasis Web.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📋 Informasi Tugas
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+| Item | Keterangan |
+|------|------------|
+| Nama | Ulfa Khairina |
+| NPM  | P2408107010013 |
+| Mata Kuliah | Pemrograman Berbsis Web |
+| Framework | Laravel (PHP) |
+| Database | SQLite |
+| Tugas | Tugas 1 (MVC) & Tugas 2 (ORM Eloquent) |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 📌 Tugas 1 — Implementasi MVC Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+Tugas pertama berfokus pada penerapan arsitektur **Model-View-Controller (MVC)** menggunakan Laravel untuk membangun aplikasi Anime Collection.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Komponen MVC
 
-## Laravel Sponsors
+| Komponen | File | Fungsi |
+|----------|------|--------|
+| **Model** | `app/Models/Anime.php` | Merepresentasikan data anime dan berinteraksi dengan database |
+| **View** | `resources/views/anime/*.blade.php` | Menampilkan data kepada pengguna (index, create, edit, show) |
+| **Controller** | `app/Http/Controllers/AnimeController.php` | Menangani logika request dan menghubungkan Model dengan View |
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## 📌 Tugas 2 — ORM Eloquent Laravel
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Tugas kedua mengembangkan aplikasi dari Tugas 1 dengan menerapkan **Eloquent ORM** secara penuh, termasuk relasi antar tabel dan fitur CRUD lengkap.
 
-## Contributing
+### Komponen Baru yang Ditambahkan
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- `app/Models/Genre.php` — Model untuk tabel genres
+- `app/Models/Studio.php` — Model untuk tabel studios
+- Migration `create_genres_table` — Membuat tabel genres
+- Migration `create_studios_table` — Membuat tabel studios
+- Migration `add_foreign_keys_to_animes_table` — Menambahkan relasi foreign key
+- Relasi `belongsTo` / `hasMany` antar model
+- Method `where()` untuk filter anime by genre
+- Dropdown Genre & Studio di form create/edit
+- Route `byGenre` untuk menampilkan anime per genre
 
-## Code of Conduct
+### Relasi Antar Tabel
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```
+Genre ──< Anime >── Studio
+```
 
-## Security Vulnerabilities
+| Model | Relasi | Target | Keterangan |
+|-------|--------|--------|------------|
+| Anime | belongsTo | Genre | Satu anime punya satu genre |
+| Anime | belongsTo | Studio | Satu anime punya satu studio |
+| Genre | hasMany | Anime | Satu genre punya banyak anime |
+| Studio | hasMany | Anime | Satu studio punya banyak anime |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Method Eloquent yang Digunakan
 
-## License
+| Method | Lokasi | Keterangan |
+|--------|--------|------------|
+| `create()` | `store()` | Menyimpan data anime baru |
+| `findOrFail()` | `show()`, `edit()`, `update()`, `destroy()` | Mencari anime by ID |
+| `where()` | `byGenre()` | Filter anime berdasarkan genre |
+| `update()` | `update()` | Memperbarui data anime |
+| `delete()` | `destroy()` | Menghapus data anime |
+| `with()` | `index()`, `show()` | Eager loading relasi genre & studio |
+| `firstOrCreate()` | `store()`, `update()` | Cari atau buat genre/studio baru |
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## ✨ Fitur Aplikasi
+
+- ✅ Menampilkan daftar anime beserta genre dan studio
+- ✅ Menambahkan anime baru (dengan opsi tambah genre/studio baru)
+- ✅ Mengedit data anime
+- ✅ Menghapus anime beserta gambarnya
+- ✅ Melihat detail lengkap satu anime
+- ✅ Filter anime berdasarkan genre
+
+---
+
+## 🗂️ Struktur Database
+
+```
+genres          studios
+  id              id
+  nama            nama
+  timestamps      timestamps
+       \          /
+        \        /
+         animes
+           id
+           judul
+           genre_id (FK)
+           studio_id (FK)
+           episode
+           rating
+           sinopsis
+           tahun_rilis
+           gambar
+           timestamps
+```
+
+---
+
+## 🚀 Cara Menjalankan
+
+```bash
+# Clone project
+git clone <repo-url>
+cd Implementasi-MVC-Framework-Laravel---Anime-Collection-
+
+# Install dependencies
+composer install
+
+# Salin file environment
+cp .env.example .env
+
+# Generate app key
+php artisan key:generate
+
+# Jalankan migrasi database
+php artisan migrate
+
+# Jalankan server
+php artisan serve
+```
+
+Akses aplikasi di `http://localhost:8000`
+
+---
+
+## 📁 Struktur Folder Penting
+
+```
+app/
+├── Http/Controllers/
+│   └── AnimeController.php
+└── Models/
+    ├── Anime.php
+    ├── Genre.php
+    └── Studio.php
+
+database/migrations/
+├── create_animes_table.php
+├── create_genres_table.php
+├── create_studios_table.php
+└── add_foreign_keys_to_animes_table.php
+
+resources/views/anime/
+├── index.blade.php
+├── create.blade.php
+├── edit.blade.php
+└── show.blade.php
+```

@@ -2,23 +2,29 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Anime extends Model
 {
-    use HasFactory;
-
-    protected $table = 'animes';
-
     protected $fillable = [
-        'judul',
-        'genre',
-        'episode',
-        'rating',
-        'sinopsis',
-        'studio',
-        'tahun_rilis',
-        'gambar',
+        'judul', 'genre_id', 'studio_id',
+        'episode', 'rating', 'sinopsis',
+        'tahun_rilis', 'gambar',
     ];
+
+    // Relasi: anime milik satu genre
+    public function genre()
+    {
+        return $this->belongsTo(Genre::class);
+    }
+
+    // Relasi: anime milik satu studio
+    public function studio()
+    {
+        return $this->belongsTo(Studio::class);
+    }
 }
+
+
+
+

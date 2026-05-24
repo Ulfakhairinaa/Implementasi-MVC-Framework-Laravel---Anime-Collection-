@@ -11,11 +11,9 @@ return new class extends Migration
         Schema::create('animes', function (Blueprint $table) {
             $table->id();
             $table->string('judul');
-            $table->string('genre');
             $table->integer('episode');
             $table->decimal('rating', 3, 1);
             $table->text('sinopsis')->nullable();
-            $table->string('studio')->nullable();
             $table->year('tahun_rilis')->nullable();
             $table->string('gambar')->nullable(); // path gambar di storage
             $table->timestamps();

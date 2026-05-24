@@ -8,3 +8,4 @@ Route::get('/', function () {
 });
 
 Route::resource('anime', AnimeController::class);
+Route::get('anime/genre/{genre_id}', [AnimeController::class, 'byGenre'])->name('anime.byGenre');
